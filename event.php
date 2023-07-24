@@ -41,9 +41,6 @@
             <div class="sm-2 col-sm-2 d-grid">
                 <a class="btn btn-primary" href="/main/createevent.php" role="button">Add Event</a>
             </div>
-            <div class="sm-2 col-sm-2 d-grid">
-                <a class="btn btn-success" href="/main/exportevent.php" role="button">Export</a>
-            </div>
         </div>
         <br>
         <div class="input-group mt-3 mb-2">
@@ -91,7 +88,8 @@
                     <td>{$row['eend']}</td>
                     <td>{$row['estatus']}</td>
                     <td>
-                        <a target='_blank' class='special btn btn-warning btn-sm' href='/main/printemployeeevent.php?id=$row[id]'>Employee List</a>
+                        <a target='_blank' class='special btn btn-success btn-sm' href='/main/printeventletter.php?id=$row[id]'>Event Letter</a>
+                        <a class='special btn btn-warning btn-sm' href='/main/printemployeeevent.php?id=$row[id]'>Employee List</a>
                         <a target='_blank' class='special btn btn-success btn-sm' href='/main/printevent.php?id=$row[id]'>Print</a>
                         <a class='special btn btn-primary btn-sm' href='/main/editevent.php?id={$row['id']}'>Edit</a>
                         <a class='special btn btn-danger btn-sm' href='/main/deleteevent.php?id={$row['id']}'>Delete</a>
