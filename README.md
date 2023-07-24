@@ -2,7 +2,7 @@
 
 //DATABASE NAME: - maindrdo
 
-//create table for employee
+//create table for employee:- 
 CREATE TABLE employee (
     id INT UNIQYE,
     emid VARCHAR(255) PRIMARY KEY,
@@ -20,7 +20,7 @@ CREATE TABLE employee (
     image VARCHAR(255)
 );
 
-//create event table
+//create event table :- 
 CREATE TABLE event (
     id INT PRIMARY KEY,
     eid INT,
@@ -33,7 +33,7 @@ CREATE TABLE event (
     eimage VARCHAR(255)
 );
 
-//create employee_event table
+//create employee_event table :- 
 CREATE TABLE `employee_event` (
     `employee_id` VARCHAR(255),
     `event_id` INT,
