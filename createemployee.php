@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $imgpath = image_upload($_FILES['image']);
 
     do {
-        if (empty($name) || empty($event)) {
+        if (empty($name) || empty($emid)) {
             $errorMessage = "ALL THE FIELDS ARE REQUIRED !";
             break;
         }

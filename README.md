@@ -1,5 +1,8 @@
 # main
 
+//drop or paste the main folder in the C:/xammp/htdocs folder
+//after that start the xammp control panel and start the Apache and MySQL server.
+
 //DATABASE NAME: - maindrdo
 
 //create table for employee:- 
@@ -41,3 +44,6 @@ CREATE TABLE `employee_event` (
     FOREIGN KEY (`event_id`) REFERENCES `event` (`id`) ON DELETE CASCADE,
     PRIMARY KEY (`employee_id`, `event_id`)
 );
+
+
+//type localhost/main/employee.php to start the project.

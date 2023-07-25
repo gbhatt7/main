@@ -63,25 +63,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 
         //not working
-        if (isset($_POST['colors']) && is_array($_POST['colors'])) {
-            // Remove previous associations
-            $sqlDelete = "DELETE FROM `employee_event` WHERE `event_id`='$event_id'";
-            $deleteResult = $connection->query($sqlDelete);
-            if (!$deleteResult) {
-                $errorMessage = "Error updating employee associations: " . $connection->error;
-                break;
-            }
+        // if (isset($_POST['colors']) && is_array($_POST['colors'])) {
+        //     // Remove previous associations
+        //     $sqlDelete = "DELETE FROM `employee_event` WHERE `event_id`='$event_id'";
+        //     $deleteResult = $connection->query($sqlDelete);
+        //     if (!$deleteResult) {
+        //         $errorMessage = "Error updating employee associations: " . $connection->error;
+        //         break;
+        //     }
 
-            // Add new associations
-            foreach ($_POST['colors'] as $selectedEmployeeId) {
-                $sqlInsert = "INSERT INTO `employee_event` (`employee_id`, `event_id`) VALUES ('$selectedEmployeeId', '$event_id')";
-                $insertResult = $connection->query($sqlInsert);
-                if (!$insertResult) {
-                    $errorMessage = "Error updating employee associations: " . $connection->error;
-                    break 2;
-                }
-            }
-        }
+        //     // Add new associations
+        //     foreach ($_POST['colors'] as $selectedEmployeeId) {
+        //         $sqlInsert = "INSERT INTO `employee_event` (`employee_id`, `event_id`) VALUES ('$selectedEmployeeId', '$event_id')";
+        //         $insertResult = $connection->query($sqlInsert);
+        //         if (!$insertResult) {
+        //             $errorMessage = "Error updating employee associations: " . $connection->error;
+        //             break 2;
+        //         }
+        //     }
+        // }
         //only the above section
 
         $successMessage = "UPDATED SUCCESSFULLY";
@@ -227,7 +227,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <table class="table table-hover" id="table">
                         <thead>
                             <tr>
-                                <th>Select</th>
+                                <!-- <th>Select</th> -->
                                 <th>employee id</th>
                                 <th>employee name</th>
                                 <th>employee email</th>
@@ -251,9 +251,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 // Check if the event is associated with the employee
                                 $isChecked = in_array($eId, $myArray) ? 'checked' : '';
                                 echo "
-                                    <tr>
-                                        <td><input type='checkbox' name='colors[]' value='$eId' $isChecked></td>
-                                        <td>{$row['emid']}</td>
+                                    <tr>"
+                                        /*<td><input type='checkbox' name='colors[]' value='$eId' $isChecked></td>*/;
+                                echo "  <td>{$row['emid']}</td>
                                         <td>{$row['name']}</td>
                                         <td>{$row['email']}</td>
                                         <td>{$row['cadre']}</td>
