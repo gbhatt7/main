@@ -13,7 +13,7 @@ $employee_id = $_GET["id"];
 
 $sql = "SELECT `emid` FROM `employee` WHERE `id`='$employee_id'";
 $result = $connection->query($sql);
-while($row = $result->fetch_assoc()){
+while ($row = $result->fetch_assoc()) {
     $emid = $row['emid'];
 }
 
@@ -30,6 +30,7 @@ $address = "";
 $event = "";
 $image = "";
 $education = "";
+$editimage = "";
 $myArray = array();
 
 $errorMessage = "";
@@ -54,14 +55,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $errorMessage = "ALL THE FIELDS ARE REQUIRED!";
             break;
         }
+        if (!empty($_FILES['editimage']['name'])) {
+            // Handle image upload and get the image path
+            $imgpath = image_upload($_FILES['editimage']);
+            // Update employee in the database
+            $sql = "UPDATE `employee` SET `name`='$name', `email`='$email', `gender`='$gender', `cadre`='$cadre', `post`='$post', `postin`='$postin', `postout`='$postout', `dob`='$dob', `phone`='$phone', `address`='$address', `education`='$education', `image`='$imgpath' WHERE `id`='$employee_id'";
+            $result = $connection->query($sql);
 
-        // Update employee in the database
-        $sql = "UPDATE `employee` SET `name`='$name', `email`='$email', `gender`='$gender', `cadre`='$cadre', `post`='$post', `postin`='$postin', `postout`='$postout', `dob`='$dob', `phone`='$phone', `address`='$address', `education`='$education' WHERE `id`='$employee_id'";
-        $result = $connection->query($sql);
+            if (!$result) {
+                $errorMessage = "Invalid query: " . $connection->error;
+                break;
+            }
+        } else {
+            $sql = "UPDATE `employee` SET `name`='$name', `email`='$email', `gender`='$gender', `cadre`='$cadre', `post`='$post', `postin`='$postin', `postout`='$postout', `dob`='$dob', `phone`='$phone', `address`='$address', `education`='$education' WHERE `id`='$employee_id'";
+            $result = $connection->query($sql);
 
-        if (!$result) {
-            $errorMessage = "Invalid query: " . $connection->error;
-            break;
+            if (!$result) {
+                $errorMessage = "Invalid query: " . $connection->error;
+                break;
+            }
         }
 
         // Update employee_event table based on selected employees
@@ -81,6 +93,64 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 if (!$insertResult) {
                     $errorMessage = "Error updating employee associations: " . $connection->error;
                     break 2;
+                }
+            }
+        }
+        function getFilesInFolder($folderPath)
+        {
+            $fileNames = array();
+
+            // Check if the folder exists
+            if (is_dir($folderPath)) {
+                // Open the directory and read its contents
+                if ($handle = opendir($folderPath)) {
+                    // Loop through each file in the directory
+                    while (($file = readdir($handle)) !== false) {
+                        // Ignore "." and ".." (current directory and parent directory)
+                        if ($file != "." && $file != "..") {
+                            $fileNames[] = $file;
+                        }
+                    }
+                    // Close the directory handle
+                    closedir($handle);
+                } else {
+                    echo "Error opening the directory.";
+                }
+            } else {
+                echo "Folder not found.";
+            }
+
+            return $fileNames;
+        }
+
+        // Set the folder path for uploads
+        $folderPath = UPLOAD_SRC;
+
+        // Get all file names in the "uploads" folder
+        $fileNames = getFilesInFolder($folderPath);
+
+        // Fetch data from the database
+        $sql = "SELECT * FROM employee";
+        $result = $connection->query($sql);
+
+        // Array to store existing file names from the database
+        $existingFileNames = array();
+
+        if ($result && $result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $existingFileNames[] = $row["image"];
+            }
+        }
+
+        // Check for extra files in the uploads folder and delete them
+        foreach ($fileNames as $fileName) {
+            if (!in_array($fileName, $existingFileNames)) {
+                // Delete the file
+                $filePath = $folderPath . $fileName;
+                if (unlink($filePath)) {
+                    echo "Deleted extra file: $fileName<br>";
+                } else {
+                    echo "Failed to delete file: $fileName<br>";
                 }
             }
         }
@@ -108,6 +178,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $phone = $row["phone"];
         $address = $row["address"];
         $education = $row["education"];
+        $image = $row["image"];
         $sql1 = "SELECT e.id, e.eid, e.ename, e.edepartment, e.estart, e.eend, e.estatus
         FROM `event` e
         INNER JOIN `employee_event` ee ON e.id = ee.event_id
@@ -151,7 +222,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         th {
             text-transform: uppercase;
         }
-        td,th{
+
+        td,
+        th {
             text-align: center;
         }
     </style>
@@ -236,12 +309,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <textarea class="form-control" id="education" name="education" rows="4" placeholder="Educational Qualifications"><?php echo $education; ?></textarea>
             </div>
             <div class="mb-3">
-                <label for="image" class="form-label">image</label>
+                <label for="editimage" class="form-label">image</label>
                 <br>
-                <img src='$fetch_src$row[image]' width='200px' height='200px'>
+                <img src="<?php echo $fetch_src . $image; ?>" width="200px" height="200px">
                 <br>
                 <br>
-                <input type="file" class="form-control" name="image" accept=".jpg,.png,.jpeg" value="<?php echo $image; ?>">
+                <input type="file" class="form-control" name="editimage" accept=".jpg,.png,.jpeg" value="<?php echo $editimage; ?>">
             </div>
             <br>
             <div class="mb-3">
