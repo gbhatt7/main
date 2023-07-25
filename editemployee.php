@@ -96,64 +96,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 }
             }
         }
-        function getFilesInFolder($folderPath)
-        {
-            $fileNames = array();
-
-            // Check if the folder exists
-            if (is_dir($folderPath)) {
-                // Open the directory and read its contents
-                if ($handle = opendir($folderPath)) {
-                    // Loop through each file in the directory
-                    while (($file = readdir($handle)) !== false) {
-                        // Ignore "." and ".." (current directory and parent directory)
-                        if ($file != "." && $file != "..") {
-                            $fileNames[] = $file;
-                        }
-                    }
-                    // Close the directory handle
-                    closedir($handle);
-                } else {
-                    echo "Error opening the directory.";
-                }
-            } else {
-                echo "Folder not found.";
-            }
-
-            return $fileNames;
-        }
-
-        // Set the folder path for uploads
-        $folderPath = UPLOAD_SRC;
-
-        // Get all file names in the "uploads" folder
-        $fileNames = getFilesInFolder($folderPath);
-
-        // Fetch data from the database
-        $sql = "SELECT * FROM employee";
-        $result = $connection->query($sql);
-
-        // Array to store existing file names from the database
-        $existingFileNames = array();
-
-        if ($result && $result->num_rows > 0) {
-            while ($row = $result->fetch_assoc()) {
-                $existingFileNames[] = $row["image"];
-            }
-        }
-
-        // Check for extra files in the uploads folder and delete them
-        foreach ($fileNames as $fileName) {
-            if (!in_array($fileName, $existingFileNames)) {
-                // Delete the file
-                $filePath = $folderPath . $fileName;
-                if (unlink($filePath)) {
-                    echo "Deleted extra file: $fileName<br>";
-                } else {
-                    echo "Failed to delete file: $fileName<br>";
-                }
-            }
-        }
 
         $successMessage = "UPDATED SUCCESSFULLY";
 
@@ -167,6 +109,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
+        $emid = $row["emid"];
         $name = $row["name"];
         $email = $row["email"];
         $gender = $row["gender"];
@@ -257,7 +200,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </nav>
             <div class="mb-3">
                 <label for="emid" class="form-label">Employee ID</label>
-                <input type="text" class="form-control" id="emid" name="emid" placeholder="Employee ID" value="<?php echo $emid; ?>">
+                <input type="text" class="form-control" id="emid" name="emid" placeholder="Employee ID" value="<?php echo $emid; ?>" disabled>
             </div>
             <div class="mb-3">
                 <label for="name" class="form-label">Name</label>

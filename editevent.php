@@ -19,6 +19,8 @@ $eplace = "";
 $estart = "";
 $eend = "";
 $estatus = "";
+$eimage = "";
+$editimage = "";
 $myArray = array();
 
 $errorMessage = "";
@@ -38,16 +40,29 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $errorMessage = "ALL THE FIELDS ARE REQUIRED!";
             break;
         }
+        if (!empty($_FILES['editimage']['name'])) {
+            // Handle image upload and get the image path
+            $imgpath = image_upload($_FILES['editimage']);
+            // Update employee in the database
+            $sql = "UPDATE `event` SET `ename`='$ename', `edepartment`='$edepartment', `eplace`='$eplace', `estart`='$estart', `eend`='$eend', `estatus`='$estatus', `eimage`='$imgpath' WHERE `id`='$event_id'";
+            $result = $connection->query($sql);
 
-        // Update event in the database
-        $sql = "UPDATE `event` SET `ename`='$ename', `edepartment`='$edepartment', `eplace`='$eplace', `estart`='$estart', `eend`='$eend', `estatus`='$estatus' WHERE `id`='$event_id'";
-        $result = $connection->query($sql);
+            if (!$result) {
+                $errorMessage = "Invalid query: ";
+                break;
+            }
+        } else {
+            $sql = "UPDATE `event` SET `ename`='$ename', `edepartment`='$edepartment', `eplace`='$eplace', `estart`='$estart', `eend`='$eend', `estatus`='$estatus' WHERE `id`='$event_id'";
+            $result = $connection->query($sql);
 
-        if (!$result) {
-            $errorMessage = "Invalid query: ";
-            break;
+            if (!$result) {
+                $errorMessage = "Invalid query: ";
+                break;
+            }
         }
 
+
+        //not working
         if (isset($_POST['colors']) && is_array($_POST['colors'])) {
             // Remove previous associations
             $sqlDelete = "DELETE FROM `employee_event` WHERE `event_id`='$event_id'";
@@ -67,6 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 }
             }
         }
+        //only the above section
 
         $successMessage = "UPDATED SUCCESSFULLY";
 
@@ -104,6 +120,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $estart = $row["estart"];
         $eend = $row["eend"];
         $estatus = $row["estatus"];
+        $eimage = $row["eimage"];
     } else {
         // No event found with the provided ID, redirect to the events page
         header("location: /main/event.php");
@@ -195,7 +212,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </div>
             <div class="mb-3">
                 <label for="eimage" class="form-label">event image</label>
-                <input type="file" class="form-control" name="eimage" accept=".jpg,.png,.jpeg" value="<?php echo $eimage; ?>">
+                <br>
+                <img src="<?php echo $fetch_src . $eimage; ?>" width="200px" height="200px">
+                <br>
+                <br>
+                <input type="file" class="form-control" name="editimage" accept=".jpg,.png,.jpeg" value="<?php echo $editimage; ?>">
             </div>
             <div class="mb-3">
                 <label for="event" class="form-label text-uppercase">employee</label>
