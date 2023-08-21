@@ -49,6 +49,8 @@
             <td><?= $row['eend']?></td>
         </tr>
         <tr>
+            <th>Event Status</th>
+            <td><?= $row['estatus']?></td>
         </tr>
         <tr>
             <th>Event Image</th>

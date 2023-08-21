@@ -39,7 +39,7 @@ ob_start();
     require('image.php');
     $fetch_src = FETCH_SRC;
     $imagePath = $fetch_src . $row['eimage'];
-    echo "<img src='$fetch_src$row[eimage]' width='100%' height='100%'>";
+    echo "<img src='$fetch_src$row[eimage]' width='100%'>";
     ?>
     <br>
 </body>
