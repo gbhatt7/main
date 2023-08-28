@@ -23,9 +23,11 @@ function image_upload($img)
 
 function image_remove($img)
 {
-    if (unlink(UPLOAD_SRC . $img)) {
-        header("$img deleted");
+    if (!unlink(UPLOAD_SRC . $img)) {
+        header("location: index.php?alert=img_rem_failed");
         exit;
+    } else {
+        echo ("$img has been deleted");
     }
 }
 
