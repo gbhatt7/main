@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     
 
     do {
-        if (empty($ename) || empty($edepartment)) {
+        if (empty($eid)) {
             $errorMessage = "ALL THE FIELDS ARE REQUIRED !";
             break;
         }

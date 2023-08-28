@@ -14,7 +14,7 @@ function image_upload($img)
     $new_loc = UPLOAD_SRC . $new_name;
 
     if (!move_uploaded_file($tmp_loc, $new_loc)) {
-        header("location: index.php?alert=img_upload");
+        header("location: employee.php?alert=img_upload");
         exit;
     } else {
         return $new_name;
@@ -23,11 +23,9 @@ function image_upload($img)
 
 function image_remove($img)
 {
-    if (!unlink(UPLOAD_SRC . $img)) {
-        header("location: index.php?alert=img_rem_failed");
+    if (unlink(UPLOAD_SRC . $img)) {
+        header("$img deleted");
         exit;
-    } else {
-        echo ("$img has been deleted");
     }
 }
 
