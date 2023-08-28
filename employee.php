@@ -17,20 +17,22 @@
             color: #fff;
             /* Change this to your desired hover text color (white in this case) */
         }
-        th{
+
+        th {
             text-transform: uppercase;
             text-align: center;
         }
-        td{
+
+        td {
             text-align: center;
         }
+
         /* .container{
             font-size: 14px;
         }
         .special{
             font-size: 14px;
         } */
-        
     </style>
 </head>
 
@@ -105,16 +107,22 @@
                     <td>
                         <a target='_blank' class='special btn btn-success btn-sm' href='/main/printemployee.php?id=$row[id]'>Print</a>
                         <a class='special btn btn-primary btn-sm' href='/main/editemployee.php?id={$row['id']}'>Edit</a>
-                        <a class='special btn btn-danger btn-sm' href='/main/deleteemployee.php?id={$row['id']}'>Delete</a>
+                        <a class='special btn btn-danger btn-sm' href='/main/deleteemployee.php?id={$row['id']}' onclick = 'return checkdelete()'>Delete</a>
                     </td>
                 </tr>";
-                $i++;
+                    $i++;
                 }
                 ?>
             </tbody>
         </table>
     </div>
 </body>
+
+<script>
+    function checkdelete() {
+        return confirm('Are you sure you want to delete the record?');
+    }
+</script>
 
 <script src="jquery.js"></script>
 <script src="index.js"></script>

@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $estatus = $_POST["estatus"];
 
     do {
-        if (empty($ename) || empty($eid)) {
+        if (empty($ename)) {
             $errorMessage = "ALL THE FIELDS ARE REQUIRED!";
             break;
         }

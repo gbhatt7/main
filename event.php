@@ -92,7 +92,7 @@
                         <a class='special btn btn-warning btn-sm' href='/main/printemployeeevent.php?id=$row[id]'>Employee List</a>
                         <a target='_blank' class='special btn btn-success btn-sm' href='/main/printevent.php?id=$row[id]'>Print</a>
                         <a class='special btn btn-primary btn-sm' href='/main/editevent.php?id={$row['id']}'>Edit</a>
-                        <a class='special btn btn-danger btn-sm' href='/main/deleteevent.php?id={$row['id']}'>Delete</a>
+                        <a class='special btn btn-danger btn-sm' href='/main/deleteevent.php?id={$row['id']}' onclick = 'return checkdelete()'>Delete</a>
                     </td>
                     </tr>";
                 $i++;
@@ -102,6 +102,12 @@
         </table>
     </div>
 </body>
+
+<script>
+    function checkdelete() {
+        return confirm('Are you sure you want to delete the record?');
+    }
+</script>
 
 <script src="jquery.js"></script>
 <script src="index.js"></script>
